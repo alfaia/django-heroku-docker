@@ -10,6 +10,9 @@ jobs:
   lint-test-build:
     runs-on: ubuntu-latest
 
+    env:
+      DATABASE_URL: sqlite:///db.sqlite3
+
     steps:
       - name: Checkout repository
         uses: actions/checkout@v2
@@ -28,14 +31,8 @@ jobs:
         run: |
           python -m flake8 .
 
-      - name: Set up PostgreSQL database
-        run: |
-          export DATABASE_URL=postgres://postgres:password@localhost:5432/testdb
-          python manage.py migrate --noinput
-
       - name: Run tests
         run: |
-          export DATABASE_URL=postgres://postgres:password@localhost:5432/testdb
           python manage.py test
 
   # heroku_git_deploy_job:
